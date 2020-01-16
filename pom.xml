@@ -21,6 +21,7 @@
         <module>spring-boot-ratelimit-redis</module>
         <module>spring-boot-log-aop</module>
         <module>spring-boot-security</module>
+        <module>spring-boot-session</module>
     </modules>
     <packaging>pom</packaging>
 
