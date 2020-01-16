@@ -1,10 +1,12 @@
 package com.genius.spring.boot.security.util;
 
-import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.genius.spring.boot.security.common.Constants;
+import com.genius.spring.boot.security.common.Status;
 import com.genius.spring.boot.security.config.JwtConfig;
+import com.genius.spring.boot.security.expection.SecurityException;
+import com.genius.spring.boot.security.vo.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -18,10 +20,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -74,7 +76,7 @@ public class JwtUtil {
 
 	public String createJWT(Authentication authentication, Boolean rememberMe) {
 		final UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-		return null;
+		return createJWT(rememberMe, principal.getId(), principal.getUsername(), principal.getRoles(), principal.getAuthorities());
 	}
 
 	/**
@@ -89,7 +91,11 @@ public class JwtUtil {
 		final String username = claims.getSubject();
 		final String redisKey = Constants.REDIS_JWT_KEY_PREFIX + username;
 
-
+		//检验redis中的JWT是否存在
+		final Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
+		if (Objects.isNull(expire) || expire <= 0) {
+			throw new SecurityException(Status.TOKEN_EXPIRED);
+		}
 		return null;
 	}
 
