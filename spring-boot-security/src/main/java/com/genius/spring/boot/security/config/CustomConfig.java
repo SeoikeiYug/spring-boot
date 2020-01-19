@@ -14,4 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "custom.config")
 @Data
 public class CustomConfig {
+
+	private IgnoreConfig ignores;
+
 }

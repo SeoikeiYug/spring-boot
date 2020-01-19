@@ -1,6 +1,8 @@
 package com.genius.spring.boot.security.model.unionkey;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -12,6 +14,8 @@ import java.io.Serializable;
  * @版本号 1.0
  * @参考地址
  **/
+@Data
+@Embeddable
 public class RolePermissionKey implements Serializable {
 
 	private static final long serialVersionUID = 6850974328279713855L;

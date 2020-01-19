@@ -100,6 +100,17 @@ public class JwtUtil {
 	}
 
 	/**
+	 * 根据 jwt 获取用户名
+	 *
+	 * @param jwt JWT
+	 * @return 用户名
+	 */
+	public String getUsernameFromJWT(String jwt) {
+		Claims claims = parseJWT(jwt);
+		return claims.getSubject();
+	}
+
+	/**
 	 * 从request的header中获取JWT
 	 *
 	 * @param request request请求
